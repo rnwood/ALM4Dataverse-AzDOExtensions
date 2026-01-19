@@ -1,0 +1,24 @@
+{
+  "name": "@alm4dataverse/azdo-extensions",
+  "version": "1.0.0",
+  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "watch": "tsc --watch"
+  },
+  "author": "ALM4Dataverse",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "azure-pipelines-task-lib": "^4.13.0"
+  }
+}

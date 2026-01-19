@@ -1,0 +1,38 @@
+{
+  "manifestVersion": 1,
+  "id": "alm4dataverse-azdo-extensions",
+  "name": "ALM4Dataverse Azure DevOps Extensions",
+  "version": "1.0.0",
+  "publisher": "alm4dataverse",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support for Power Platform",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "icons": {
+    "default": "images/extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "dist/tasks/set-connection-variables"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "alm4dataverse-set-connection-variables",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "dist/tasks/set-connection-variables"
+      }
+    }
+  ],
+  "scopes": [],
+  "contributionTypes": []
+}

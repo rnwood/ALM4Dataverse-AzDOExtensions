@@ -1,0 +1,47 @@
+# Example Azure DevOps Pipeline using ALM4Dataverse Set Connection Variables
+# This example demonstrates how to use the task with WorkloadIdentityFederation
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Example 1: Using WorkloadIdentityFederation (Recommended)
+- task: ALM4DataverseSetConnectionVariables@1
+  displayName: 'Set Connection Variables (WorkloadIdentityFederation)'
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'PowerPlatform-WorkloadIdentity'  # Your service connection name
+    Environment: 'https://myorg.crm.dynamics.com'
+
+# Use the variables in a custom PowerShell script
+- task: PowerShell@2
+  displayName: 'Use Connection Variables'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Environment URL: $(BuildTools.EnvironmentUrl)"
+      Write-Host "Application ID: $(BuildTools.ApplicationId)"
+      Write-Host "Tenant ID: $(BuildTools.TenantId)"
+      Write-Host "Connection String is available for custom scripts"
+      # The connection string includes: $(BuildTools.DataverseConnectionString)
+
+# Example 2: Using Service Principal with Client Secret
+- task: ALM4DataverseSetConnectionVariables@1
+  displayName: 'Set Connection Variables (Client Secret)'
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'PowerPlatform-SPN'  # Your service connection name
+    Environment: 'https://myorg.crm.dynamics.com'
+
+# Example 3: Using Username/Password (Not recommended for production)
+- task: ALM4DataverseSetConnectionVariables@1
+  displayName: 'Set Connection Variables (Username/Password)'
+  inputs:
+    authenticationType: 'PowerPlatformEnvironment'
+    PowerPlatformEnvironment: 'PowerPlatform-UserPass'  # Your service connection name
+    Environment: 'https://myorg.crm.dynamics.com'
+    ApplicationId: '00000000-0000-0000-0000-000000000000'  # Your app registration ID
+    RedirectUri: 'http://localhost'
