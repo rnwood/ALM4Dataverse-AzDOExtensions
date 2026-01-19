@@ -63,7 +63,8 @@ export async function main(): Promise<void> {
         // Set the IdTokenRequestUrl as a pipeline variable
         tl.setVariable(IdTokenRequestUrlVariableName, idTokenRequestUrl, false);
         
-        // Also expose PAC_ADO_ID_TOKEN_REQUEST_URL as an output variable
+        // Also expose as BuildTools.AdoIdTokenRequestUrl for consistency with PAC_ADO_ID_TOKEN_REQUEST_URL
+        // This allows downstream tasks to reference the same URL using either variable name
         tl.setVariable(AdoIdTokenRequestUrlVariableName, idTokenRequestUrl, false);
 
         // Get the pipeline OAuth token for requesting OIDC tokens
