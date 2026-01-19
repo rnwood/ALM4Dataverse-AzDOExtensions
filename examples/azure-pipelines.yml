@@ -25,6 +25,7 @@ steps:
       Write-Host "Environment URL: $(BuildTools.EnvironmentUrl)"
       Write-Host "Application ID: $(BuildTools.ApplicationId)"
       Write-Host "Tenant ID: $(BuildTools.TenantId)"
+      Write-Host "OIDC Token Request URL: $(BuildTools.IdTokenRequestUrl)"
       Write-Host "Connection String is available for custom scripts"
       # The connection string includes: $(BuildTools.DataverseConnectionString)
 

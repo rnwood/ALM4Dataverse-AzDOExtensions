@@ -11,3 +11,4 @@ export const TenantIdVariableName = `${VariableNamePrefix}TenantId`;
 export const DataverseConnectionStringVariableName = `${VariableNamePrefix}DataverseConnectionString`;
 export const UserNameVariableName = `${VariableNamePrefix}UserName`;
 export const PasswordVariableName = `${VariableNamePrefix}Password`;
+export const IdTokenRequestUrlVariableName = `${VariableNamePrefix}IdTokenRequestUrl`;

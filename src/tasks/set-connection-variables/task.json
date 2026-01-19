@@ -47,6 +47,10 @@
     {
       "name": "BuildTools.Password",
       "description": "Output variable of Password used by Service Connection (only for username/password auth)"
+    },
+    {
+      "name": "BuildTools.IdTokenRequestUrl",
+      "description": "Output variable of the OIDC token request URL (only for WorkloadIdentityFederation auth)"
     }
   ],
   "inputs": [

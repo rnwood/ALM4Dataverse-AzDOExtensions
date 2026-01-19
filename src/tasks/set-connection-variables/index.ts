@@ -11,7 +11,8 @@ import {
   TenantIdVariableName,
   DataverseConnectionStringVariableName,
   UserNameVariableName,
-  PasswordVariableName
+  PasswordVariableName,
+  IdTokenRequestUrlVariableName
 } from "../../host/PipelineVariables";
 
 (async () => {
@@ -56,6 +57,9 @@ export async function main(): Promise<void> {
         const idTokenRequestUrl = buildIdTokenRequestUrl(powerPlatformSPN);
         process.env.PAC_ADO_ID_TOKEN_REQUEST_URL = idTokenRequestUrl;
         tl.debug(`OIDC Token Request URL: ${idTokenRequestUrl}`);
+
+        // Set the IdTokenRequestUrl as a pipeline variable
+        tl.setVariable(IdTokenRequestUrlVariableName, idTokenRequestUrl, false);
 
         // Get the pipeline OAuth token for requesting OIDC tokens
         const pipelineAuth = tl.getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
