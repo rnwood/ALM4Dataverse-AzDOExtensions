@@ -26,8 +26,10 @@ steps:
       Write-Host "Application ID: $(BuildTools.ApplicationId)"
       Write-Host "Tenant ID: $(BuildTools.TenantId)"
       Write-Host "OIDC Token Request URL: $(BuildTools.IdTokenRequestUrl)"
+      Write-Host "ADO ID Token Request URL: $(BuildTools.AdoIdTokenRequestUrl)"
       Write-Host "Connection String is available for custom scripts"
       # The connection string includes: $(BuildTools.DataverseConnectionString)
+      # The ADO OAuth token is available as: $(BuildTools.AdoIdTokenRequestToken)
 
 # Example 2: Using Service Principal with Client Secret
 - task: ALM4DataverseSetConnectionVariables@1

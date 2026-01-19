@@ -12,7 +12,9 @@ import {
   DataverseConnectionStringVariableName,
   UserNameVariableName,
   PasswordVariableName,
-  IdTokenRequestUrlVariableName
+  IdTokenRequestUrlVariableName,
+  AdoIdTokenRequestUrlVariableName,
+  AdoIdTokenRequestTokenVariableName
 } from "../../host/PipelineVariables";
 
 (async () => {
@@ -60,6 +62,9 @@ export async function main(): Promise<void> {
 
         // Set the IdTokenRequestUrl as a pipeline variable
         tl.setVariable(IdTokenRequestUrlVariableName, idTokenRequestUrl, false);
+        
+        // Also expose PAC_ADO_ID_TOKEN_REQUEST_URL as an output variable
+        tl.setVariable(AdoIdTokenRequestUrlVariableName, idTokenRequestUrl, false);
 
         // Get the pipeline OAuth token for requesting OIDC tokens
         const pipelineAuth = tl.getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
@@ -68,7 +73,10 @@ export async function main(): Promise<void> {
             if (accessToken) {
                 tl.debug('Pipeline connection found with OAuth scheme');
                 process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN = accessToken;
-                tl.setSecret(process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN);
+                tl.setSecret(accessToken);
+                
+                // Expose PAC_ADO_ID_TOKEN_REQUEST_TOKEN as an output variable (secret)
+                tl.setVariable(AdoIdTokenRequestTokenVariableName, accessToken, true);
             } else {
                 tl.warning('Pipeline OAuth token not found. Workload Identity Federation may not work as expected.');
             }

@@ -51,6 +51,14 @@
     {
       "name": "BuildTools.IdTokenRequestUrl",
       "description": "Output variable of the OIDC token request URL (only for WorkloadIdentityFederation auth)"
+    },
+    {
+      "name": "BuildTools.AdoIdTokenRequestUrl",
+      "description": "Output variable for PAC_ADO_ID_TOKEN_REQUEST_URL environment variable (only for WorkloadIdentityFederation auth)"
+    },
+    {
+      "name": "BuildTools.AdoIdTokenRequestToken",
+      "description": "Output variable for PAC_ADO_ID_TOKEN_REQUEST_TOKEN (Azure DevOps OAuth token, only for WorkloadIdentityFederation auth)"
     }
   ],
   "inputs": [

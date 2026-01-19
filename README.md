@@ -30,6 +30,8 @@ The task sets the following pipeline variables:
 - `BuildTools.Password` - Password (only for username/password auth, marked as secret)
 - `BuildTools.DataverseConnectionString` - Complete Dataverse connection string
 - `BuildTools.IdTokenRequestUrl` - OIDC token request URL (only for WorkloadIdentityFederation auth)
+- `BuildTools.AdoIdTokenRequestUrl` - Azure DevOps OIDC token request URL for PAC tools (only for WorkloadIdentityFederation auth)
+- `BuildTools.AdoIdTokenRequestToken` - Azure DevOps OAuth access token for OIDC requests (only for WorkloadIdentityFederation auth, marked as secret)
 
 ## Usage
 
@@ -92,7 +94,10 @@ When using WorkloadIdentityFederation:
 1. The task extracts the Service Principal ID and Tenant ID from the service connection
 2. It builds an OIDC token request URL using Azure DevOps system variables
 3. It sets environment variables (`PAC_ADO_ID_TOKEN_REQUEST_URL` and `PAC_ADO_ID_TOKEN_REQUEST_TOKEN`) that downstream tools can use to acquire federated tokens
-4. It sets the `BuildTools.IdTokenRequestUrl` pipeline variable with the OIDC token request URL for use in custom scripts
+4. It exposes these values as pipeline output variables:
+   - `BuildTools.IdTokenRequestUrl` - The OIDC token request URL
+   - `BuildTools.AdoIdTokenRequestUrl` - Same as PAC_ADO_ID_TOKEN_REQUEST_URL for downstream tasks
+   - `BuildTools.AdoIdTokenRequestToken` - The Azure DevOps OAuth token (secret)
 5. It generates a Dataverse connection string with `UseFederatedCredentials=true`
 
 This enables passwordless authentication without managing client secrets.

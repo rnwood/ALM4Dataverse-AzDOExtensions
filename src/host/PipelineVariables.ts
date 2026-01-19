@@ -12,3 +12,5 @@ export const DataverseConnectionStringVariableName = `${VariableNamePrefix}Datav
 export const UserNameVariableName = `${VariableNamePrefix}UserName`;
 export const PasswordVariableName = `${VariableNamePrefix}Password`;
 export const IdTokenRequestUrlVariableName = `${VariableNamePrefix}IdTokenRequestUrl`;
+export const AdoIdTokenRequestUrlVariableName = `${VariableNamePrefix}AdoIdTokenRequestUrl`;
+export const AdoIdTokenRequestTokenVariableName = `${VariableNamePrefix}AdoIdTokenRequestToken`;
