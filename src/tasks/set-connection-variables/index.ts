@@ -64,9 +64,14 @@ export async function main(): Promise<void> {
         // Get the pipeline OAuth token for requesting OIDC tokens
         const pipelineAuth = tl.getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
         if (pipelineAuth && pipelineAuth.scheme === 'OAuth') {
-            tl.debug('Pipeline connection found with OAuth scheme');
-            process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN = pipelineAuth.parameters['AccessToken'];
-            tl.setSecret(process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN);
+            const accessToken = pipelineAuth.parameters['AccessToken'];
+            if (accessToken) {
+                tl.debug('Pipeline connection found with OAuth scheme');
+                process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN = accessToken;
+                tl.setSecret(process.env.PAC_ADO_ID_TOKEN_REQUEST_TOKEN);
+            } else {
+                tl.warning('Pipeline OAuth token not found. Workload Identity Federation may not work as expected.');
+            }
         } else {
             tl.warning('Could not find pipeline connection details. Workload Identity Federation may not work as expected.');
         }
@@ -138,7 +143,9 @@ export async function main(): Promise<void> {
 // Build the OIDC token request URL for Workload Identity Federation
 // Docs: https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/oidctoken/create?view=azure-devops-rest-7.2
 function buildIdTokenRequestUrl(serviceConnectionId: string): string {
-  const oidcApiVersion = '7.2-preview.1';
+  // Azure DevOps OIDC API version - update if newer stable version becomes available
+  const OIDC_API_VERSION = '7.2-preview.1';
+  
   const projectId = tl.getVariable('System.TeamProjectId');
   const hub = tl.getVariable("System.HostType");
   const planId = tl.getVariable('System.PlanId');
@@ -153,6 +160,6 @@ function buildIdTokenRequestUrl(serviceConnectionId: string): string {
     throw new Error('Required Azure DevOps system variables are not available');
   }
 
-  const tokenRequestUrl = `${uri}${projectId}/_apis/distributedtask/hubs/${hub}/plans/${planId}/jobs/${jobId}/oidctoken?serviceConnectionId=${serviceConnectionId}&api-version=${oidcApiVersion}`;
+  const tokenRequestUrl = `${uri}${projectId}/_apis/distributedtask/hubs/${hub}/plans/${planId}/jobs/${jobId}/oidctoken?serviceConnectionId=${serviceConnectionId}&api-version=${OIDC_API_VERSION}`;
   return tokenRequestUrl;
 }
