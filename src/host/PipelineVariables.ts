@@ -14,3 +14,4 @@ export const PasswordVariableName = `${VariableNamePrefix}Password`;
 export const IdTokenRequestUrlVariableName = `${VariableNamePrefix}IdTokenRequestUrl`;
 export const AdoIdTokenRequestUrlVariableName = `${VariableNamePrefix}AdoIdTokenRequestUrl`;
 export const AdoIdTokenRequestTokenVariableName = `${VariableNamePrefix}AdoIdTokenRequestToken`;
+export const AuthenticationTypeVariableName = `${VariableNamePrefix}AuthenticationType`;

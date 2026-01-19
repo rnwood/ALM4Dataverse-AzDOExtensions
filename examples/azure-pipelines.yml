@@ -22,6 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      Write-Host "Authentication Type: $(BuildTools.AuthenticationType)"
       Write-Host "Environment URL: $(BuildTools.EnvironmentUrl)"
       Write-Host "Application ID: $(BuildTools.ApplicationId)"
       Write-Host "Tenant ID: $(BuildTools.TenantId)"

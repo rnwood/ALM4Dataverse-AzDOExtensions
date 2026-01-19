@@ -14,7 +14,8 @@ import {
   PasswordVariableName,
   IdTokenRequestUrlVariableName,
   AdoIdTokenRequestUrlVariableName,
-  AdoIdTokenRequestTokenVariableName
+  AdoIdTokenRequestTokenVariableName,
+  AuthenticationTypeVariableName
 } from "../../host/PipelineVariables";
 
 (async () => {
@@ -94,6 +95,9 @@ export async function main(): Promise<void> {
         const dataverseConnectionString = `AuthType=ClientSecret;url=${environmentUrl};ClientId=${servicePrincipalId};UseFederatedCredentials=true`;
         tl.setVariable(DataverseConnectionStringVariableName, dataverseConnectionString, true);
 
+        // Set the authentication type
+        tl.setVariable(AuthenticationTypeVariableName, 'WorkloadIdentityFederation', false);
+
         tl.debug('WorkloadIdentityFederation configuration complete');
         break;
       }
@@ -113,6 +117,9 @@ export async function main(): Promise<void> {
 
       const dataverseConnectionString = `AuthType=ClientSecret;url=${environmentUrl};ClientId=${applicationId};ClientSecret=${clientSecret}`;
       tl.setVariable(DataverseConnectionStringVariableName, dataverseConnectionString, true);
+
+      // Set the authentication type
+      tl.setVariable(AuthenticationTypeVariableName, 'ClientSecret', false);
 
       break;
     }
@@ -140,6 +147,9 @@ export async function main(): Promise<void> {
 
       const dataverseConnectionString = `AuthType=OAuth;url=${environmentUrl};UserName=${userName};Password=${password};AppId=${applicationId};RedirectUri=${redirectUri}`;
       tl.setVariable(DataverseConnectionStringVariableName, dataverseConnectionString, true);
+
+      // Set the authentication type
+      tl.setVariable(AuthenticationTypeVariableName, 'UsernamePassword', false);
 
       break;
     }

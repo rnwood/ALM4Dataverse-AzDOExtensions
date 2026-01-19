@@ -32,6 +32,7 @@ The task sets the following pipeline variables:
 - `BuildTools.IdTokenRequestUrl` - OIDC token request URL (only for WorkloadIdentityFederation auth)
 - `BuildTools.AdoIdTokenRequestUrl` - Azure DevOps OIDC token request URL for PAC tools (only for WorkloadIdentityFederation auth)
 - `BuildTools.AdoIdTokenRequestToken` - Azure DevOps OAuth access token for OIDC requests (only for WorkloadIdentityFederation auth, marked as secret)
+- `BuildTools.AuthenticationType` - The authentication type used (WorkloadIdentityFederation, ClientSecret, or UsernamePassword)
 
 ## Usage
 

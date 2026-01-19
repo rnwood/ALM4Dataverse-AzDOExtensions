@@ -59,6 +59,10 @@
     {
       "name": "BuildTools.AdoIdTokenRequestToken",
       "description": "Output variable for PAC_ADO_ID_TOKEN_REQUEST_TOKEN (Azure DevOps OAuth token, only for WorkloadIdentityFederation auth)"
+    },
+    {
+      "name": "BuildTools.AuthenticationType",
+      "description": "Output variable indicating the authentication type used (WorkloadIdentityFederation, ClientSecret, or UsernamePassword)"
     }
   ],
   "inputs": [
