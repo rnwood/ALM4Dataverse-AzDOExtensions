@@ -4,9 +4,10 @@
   "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && copyfiles -u 1 \"src/tasks/**/task.json\" dist && tfx extension create",
     "clean": "rm -rf dist",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "publish": "npm run build && tfx extension publish --publisher ALM4Dataverse --manifest-js vss-extension.json --share-with rnwsol"
   },
   "author": "ALM4Dataverse",
   "license": "MIT",
@@ -16,9 +17,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "copyfiles": "^2.4.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "azure-pipelines-task-lib": "^4.13.0"
+    "azure-pipelines-task-lib": "^4.13.0",
+    "tfx-cli": "^0.23.1"
   }
 }

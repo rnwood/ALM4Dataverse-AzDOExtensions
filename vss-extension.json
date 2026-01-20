@@ -9,7 +9,7 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
-  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support for Power Platform",
+  "description": "Azure DevOps tasks for ALM4Dataverse",
   "categories": [
     "Azure Pipelines"
   ],
