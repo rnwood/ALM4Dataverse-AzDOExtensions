@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "alm4dataverse-azdo-extensions",
   "name": "ALM4Dataverse Azure DevOps Extensions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "alm4dataverse",
   "targets": [
     {
