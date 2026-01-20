@@ -88,6 +88,65 @@ After running the task, use the output variables in subsequent steps:
       Write-Host "Connection String available for custom scripts"
 ```
 
+### Using with DefaultAzureCredential
+
+The output variables can be mapped to Azure SDK environment variables to enable automatic authentication with `DefaultAzureCredential` regardless of the authentication type:
+
+```yaml
+- task: ALM4DataverseSetConnectionVariables@1
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'MyPowerPlatformConnection'
+    Environment: 'https://myorg.crm.dynamics.com'
+
+# Map BuildTools variables to Azure environment variables for DefaultAzureCredential
+- task: PowerShell@2
+  displayName: 'Set Azure Credential Environment Variables'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Common variables for all auth types
+      Write-Host "##vso[task.setvariable variable=AZURE_TENANT_ID]$(BuildTools.TenantId)"
+      Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_ID]$(BuildTools.ApplicationId)"
+      
+      # Auth-type specific variables
+      $authType = "$(BuildTools.AuthenticationType)"
+      Write-Host "Authentication Type: $authType"
+      
+      if ($authType -eq "ClientSecret") {
+        # For Service Principal with Client Secret
+        Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_SECRET;issecret=true]$(BuildTools.ClientSecret)"
+        Write-Host "Configured AZURE_CLIENT_SECRET for ClientSecret authentication"
+      }
+      elseif ($authType -eq "WorkloadIdentityFederation") {
+        # For Workload Identity Federation, Azure SDK will use OIDC token from Azure DevOps
+        # The AZURE_FEDERATED_TOKEN environment variable will be set by the Azure SDK
+        # when it detects the Azure DevOps environment
+        Write-Host "Configured for WorkloadIdentityFederation - DefaultAzureCredential will use OIDC"
+      }
+
+# Now any tool using DefaultAzureCredential will automatically authenticate
+- task: AzureCLI@2
+  displayName: 'Use Azure CLI with Auto Authentication'
+  inputs:
+    azureSubscription: 'MyAzureSubscription'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # DefaultAzureCredential will use the environment variables set above
+      # Works with WorkloadIdentityFederation, ClientSecret, or any other auth type
+      az account show
+```
+
+**Key Points:**
+- `AZURE_TENANT_ID` maps to `BuildTools.TenantId`
+- `AZURE_CLIENT_ID` maps to `BuildTools.ApplicationId`
+- `AZURE_CLIENT_SECRET` maps to `BuildTools.ClientSecret` (for ClientSecret auth only)
+- For WorkloadIdentityFederation, the Azure SDK automatically detects the Azure DevOps OIDC environment
+- The `BuildTools.AuthenticationType` variable allows conditional logic based on the auth method
+
+This approach ensures that tools using Azure SDK's `DefaultAzureCredential` (Azure CLI, PowerShell Az modules, .NET applications, etc.) will automatically authenticate without requiring code changes, regardless of which authentication method is configured.
+
 ## How WorkloadIdentityFederation Works
 
 When using WorkloadIdentityFederation:
