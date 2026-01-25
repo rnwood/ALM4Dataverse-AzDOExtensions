@@ -11,6 +11,8 @@ module.exports = tasks.map((task) => ({
   entry: `./${task}`,
   target: "node",
   externalsPresets: { node: true },
+  // Don't mark any npm packages as external - bundle everything except Node.js built-ins
+  externals: [],
   module: {
     rules: [
       {
@@ -27,5 +29,6 @@ module.exports = tasks.map((task) => ({
   output: {
     filename: task.replace(/\.ts$/, ".js").replace(/src[/\\]/, ""),
     path: resolve(__dirname, "dist"),
+    libraryTarget: "commonjs2",
   },
 }));

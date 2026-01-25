@@ -4,10 +4,10 @@
   "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support",
   "main": "index.js",
   "scripts": {
-    "build": "webpack && copyfiles -u 1 \"src/tasks/**/task.json\" dist && tfx extension create",
-    "clean": "rm -rf dist",
+    "clean": "node -e \"const fs=require('fs');const rm=(p)=>{if(fs.existsSync(p)){if(fs.statSync(p).isDirectory()){fs.readdirSync(p).forEach(f=>rm(p+'/'+f));fs.rmdirSync(p)}else{fs.unlinkSync(p)}}};rm('dist')\"",
+    "build": "npm run clean && webpack && copyfiles -u 1 \"src/tasks/**/task.json\" dist && tfx extension create",
     "watch": "webpack --watch",
-    "publish": "npm run build && tfx extension publish --publisher ALM4Dataverse --manifest-js vss-extension.json --share-with rnwsol"
+    "publish": "npm run build && tfx extension publish --publisher ALM4Dataverse --manifest-js vss-extension.json"
   },
   "author": "ALM4Dataverse",
   "license": "MIT",
