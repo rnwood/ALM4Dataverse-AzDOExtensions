@@ -1,0 +1,75 @@
+{
+  "manifestVersion": 1,
+  "id": "alm4dataverse-azdo-extensions",
+  "name": "ALM4Dataverse Azure DevOps Extensions",
+  "version": "1.1.16",
+  "publisher": "alm4dataverse",
+  "description": "Azure DevOps tasks for ALM4Dataverse with enhanced support for WorkloadIdentityFederation authentication, Azure DevOps compatibility, and automatic Azure SDK integration",
+  "tags": [
+    "Power Platform",
+    "ALM",
+    "Dataverse",
+    "DevOps",
+    "Azure Pipelines",
+    "WorkloadIdentityFederation",
+    "Authentication",
+    "Azure SDK",
+    "DefaultAzureCredential",
+    "Build",
+    "Release"
+  ],
+  "icons": {
+    "default": "images/extension-icon.png"
+  },
+  "public": true,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "scopes": [],
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
+  "links": {
+    "repository": {
+      "uri": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions"
+    },
+    "issues": {
+      "uri": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions/issues"
+    },
+    "support": {
+      "uri": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions/issues"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions"
+  },
+  "files": [
+    {
+      "path": "dist/tasks/set-connection-variables"
+    },
+    {
+      "path": "overview.md",
+      "addressable": true
+    }
+  ],
+  "contributions": [
+    {
+      "id": "alm4dataverse-set-connection-variables",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "dist/tasks/set-connection-variables"
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@alm4dataverse/azdo-extensions",
+  "version": "1.1.16",
+  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support, enhanced Azure DevOps compatibility, and automatic Azure SDK integration",
+  "main": "index.js",
+  "scripts": {
+    "clean": "node -e \"const fs=require('fs');const rm=(p)=>{if(fs.existsSync(p)){if(fs.statSync(p).isDirectory()){fs.readdirSync(p).forEach(f=>rm(p+'/'+f));fs.rmdirSync(p)}else{fs.unlinkSync(p)}}};rm('dist')\"",
+    "build": "npm run clean && webpack && copyfiles -u 1 \"src/tasks/**/task.json\" dist && tfx extension create",
+    "watch": "webpack --watch",
+    "publish": "npm run build && tfx extension publish --publisher ALM4Dataverse --manifest-js vss-extension.json"
+  },
+  "author": "ALM4Dataverse",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rnwood/ALM4Dataverse-AzDOExtensions"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/node-fetch": "^2.6.13",
+    "copyfiles": "^2.4.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.3.3",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "azure-devops-node-api": "^14.0.2",
+    "azure-pipelines-task-lib": "^4.13.0",
+    "node-fetch": "^2.7.0",
+    "tfx-cli": "^0.23.1"
+  }
+}

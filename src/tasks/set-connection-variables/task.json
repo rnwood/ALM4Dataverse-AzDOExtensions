@@ -1,0 +1,66 @@
+{
+  "id": "16f7fb6b-3b1e-46cd-a4cb-a2f018310f31",
+  "name": "ALM4DataverseSetConnectionVariables",
+  "friendlyName": "ALM4Dataverse Set Connection Variables",
+  "description": "Sets ALM4DataverseSetConnectionVariables.* variables and optionally AZURE_* environment variables to provide custom script tasks access to use the Service Connection as a single source of truth. Supports WorkloadIdentityFederation and ManagedServiceIdentity with enhanced Azure DevOps compatibility and automatic Azure SDK integration.",
+  "author": "ALM4Dataverse",
+  "helpMarkDown": "Sets pipeline variables from Power Platform service connection. Supports WorkloadIdentityFederation, ManagedServiceIdentity, and Service Principal with client secret authentication. Can automatically configure Azure SDK environment variables for seamless DefaultAzureCredential integration with enhanced Azure DevOps compatibility.",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "1",
+    "Patch": "16"
+  },
+  "preview": false,
+  "minimumAgentVersion": "2.144.0",
+  "instanceNameFormat": "ALM4Dataverse Set Connection Variables",
+  "outputVariables": [
+    {
+      "name": "EnvironmentUrl",
+      "description": "Output variable of Environment URL used by Service Connection"
+    },
+    {
+      "name": "ApplicationId",
+      "description": "Output variable of Application Id used by Service Connection"
+    },
+    {
+      "name": "TenantId",
+      "description": "Output variable of Tenant Id used by Service Connection"
+    },
+    {
+      "name": "AuthenticationType",
+      "description": "Output variable indicating the authentication type used (WorkloadIdentityFederation, ManagedServiceIdentity, or ClientSecret)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "authenticationType",
+      "type": "radio",
+      "label": "Authentication type",
+      "defaultValue": "PowerPlatformSPN",
+      "required": true,
+      "helpMarkDown": "Choose the authentication method for connecting to Power Platform.",
+      "options": {
+        "PowerPlatformSPN": "Service Principal (supports WorkloadIdentityFederation and ManagedServiceIdentity)"
+      }
+    },
+    {
+      "name": "PowerPlatformSPN",
+      "type": "connectedService:powerplatform-spn",
+      "label": "Service connection",
+      "required": true,
+      "visibleRule": "authenticationType = PowerPlatformSPN",
+      "helpMarkDown": "Authenticate with your Power Platform environment with an Azure AppID, tenantID and client secret, WorkloadIdentityFederation, or ManagedServiceIdentity."
+    }
+  ],
+  "execution": {
+    "Node20_1": {
+      "target": "index.js"
+    }
+  }
+}
