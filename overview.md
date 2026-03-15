@@ -10,14 +10,14 @@ Enhance your Power Platform ALM pipeline with modern authentication support incl
 - **Username/Password** - Basic authentication support
 
 ### ⚡ Set Connection Variables Task
-Sets `BuildTools.*` pipeline variables from Power Platform service connections, providing downstream tasks with standardized authentication credentials.
+Sets `ALM4DataverseSetConnectionVariables.*` pipeline variables from Power Platform service connections, providing downstream tasks with standardized authentication credentials.
 
 #### Output Variables
-- `BuildTools.EnvironmentUrl` - Power Platform environment URL
-- `BuildTools.ApplicationId` - Application/Service Principal ID  
-- `BuildTools.TenantId` - Azure AD Tenant ID
-- `BuildTools.DataverseConnectionString` - Complete connection string
-- `BuildTools.AuthenticationType` - Authentication method used
+- `ALM4DataverseSetConnectionVariables.EnvironmentUrl` - Power Platform environment URL
+- `ALM4DataverseSetConnectionVariables.ApplicationId` - Application/Service Principal ID  
+- `ALM4DataverseSetConnectionVariables.TenantId` - Azure AD Tenant ID
+- `ALM4DataverseSetConnectionVariables.DataverseConnectionString` - Complete connection string
+- `ALM4DataverseSetConnectionVariables.AuthenticationType` - Authentication method used
 - Additional auth-specific variables (secrets, tokens, etc.)
 
 ## Quick Start
@@ -35,8 +35,8 @@ Sets `BuildTools.*` pipeline variables from Power Platform service connections, 
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "Environment: $(BuildTools.EnvironmentUrl)"
-      Write-Host "App ID: $(BuildTools.ApplicationId)"
+      Write-Host "Environment: $(ALM4DataverseSetConnectionVariables.EnvironmentUrl)"
+      Write-Host "App ID: $(ALM4DataverseSetConnectionVariables.ApplicationId)"
 ```
 
 ## Azure SDK Integration
@@ -66,11 +66,11 @@ Sets `BuildTools.*` pipeline variables from Power Platform service connections, 
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "##vso[task.setvariable variable=AZURE_TENANT_ID]$(BuildTools.TenantId)"
-      Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_ID]$(BuildTools.ApplicationId)"
+      Write-Host "##vso[task.setvariable variable=AZURE_TENANT_ID]$(ALM4DataverseSetConnectionVariables.TenantId)"
+      Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_ID]$(ALM4DataverseSetConnectionVariables.ApplicationId)"
       
-      if ("$(BuildTools.AuthenticationType)" -eq "ClientSecret") {
-        Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_SECRET;issecret=true]$(BuildTools.ClientSecret)"
+      if ("$(ALM4DataverseSetConnectionVariables.AuthenticationType)" -eq "ClientSecret") {
+        Write-Host "##vso[task.setvariable variable=AZURE_CLIENT_SECRET;issecret=true]$(ALM4DataverseSetConnectionVariables.ClientSecret)"
       }
 ```
 

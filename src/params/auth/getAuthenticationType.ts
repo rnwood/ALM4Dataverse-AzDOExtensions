@@ -3,7 +3,7 @@
 
 import * as tl from 'azure-pipelines-task-lib/task';
 
-export type AuthenticationType = "PowerPlatformEnvironment" | "PowerPlatformSPN";
+export type AuthenticationType = "PowerPlatformSPN";
 
 export function getAuthenticationType(defaultAuthType?: AuthenticationType): AuthenticationType {
   const authenticationType = tl.getInput('authenticationType');

@@ -1,6 +1,6 @@
 {
   "name": "@alm4dataverse/azdo-extensions",
-  "version": "1.1.4",
+  "version": "1.1.16",
   "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support, enhanced Azure DevOps compatibility, and automatic Azure SDK integration",
   "main": "index.js",
   "scripts": {

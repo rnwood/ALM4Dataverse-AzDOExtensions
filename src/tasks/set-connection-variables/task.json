@@ -2,9 +2,9 @@
   "id": "16f7fb6b-3b1e-46cd-a4cb-a2f018310f31",
   "name": "ALM4DataverseSetConnectionVariables",
   "friendlyName": "ALM4Dataverse Set Connection Variables",
-  "description": "Sets BuildTools.* variables and optionally AZURE_* environment variables to provide custom script tasks access to use the Service Connection as a single source of truth. Supports WorkloadIdentityFederation with enhanced Azure DevOps compatibility and automatic Azure SDK integration.",
+  "description": "Sets ALM4DataverseSetConnectionVariables.* variables and optionally AZURE_* environment variables to provide custom script tasks access to use the Service Connection as a single source of truth. Supports WorkloadIdentityFederation and ManagedServiceIdentity with enhanced Azure DevOps compatibility and automatic Azure SDK integration.",
   "author": "ALM4Dataverse",
-  "helpMarkDown": "Sets pipeline variables from Power Platform service connection. Supports WorkloadIdentityFederation, Service Principal with client secret, and username/password authentication. Can automatically configure Azure SDK environment variables for seamless DefaultAzureCredential integration with enhanced Azure DevOps compatibility.",
+  "helpMarkDown": "Sets pipeline variables from Power Platform service connection. Supports WorkloadIdentityFederation, ManagedServiceIdentity, and Service Principal with client secret authentication. Can automatically configure Azure SDK environment variables for seamless DefaultAzureCredential integration with enhanced Azure DevOps compatibility.",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -14,55 +14,27 @@
   "version": {
     "Major": "1",
     "Minor": "1",
-    "Patch": "4"
+    "Patch": "16"
   },
   "preview": false,
   "minimumAgentVersion": "2.144.0",
   "instanceNameFormat": "ALM4Dataverse Set Connection Variables",
   "outputVariables": [
     {
-      "name": "BuildTools.EnvironmentUrl",
+      "name": "EnvironmentUrl",
       "description": "Output variable of Environment URL used by Service Connection"
     },
     {
-      "name": "BuildTools.ApplicationId",
+      "name": "ApplicationId",
       "description": "Output variable of Application Id used by Service Connection"
     },
     {
-      "name": "BuildTools.ClientSecret",
-      "description": "Output variable of Client Secret used by Service Connection (only for ClientSecret auth)"
-    },
-    {
-      "name": "BuildTools.TenantId",
+      "name": "TenantId",
       "description": "Output variable of Tenant Id used by Service Connection"
     },
     {
-      "name": "BuildTools.DataverseConnectionString",
-      "description": "Output variable of a Dataverse connection string based on values used by Service Connection"
-    },
-    {
-      "name": "BuildTools.UserName",
-      "description": "Output variable of Username used by Service Connection (only for username/password auth)"
-    },
-    {
-      "name": "BuildTools.Password",
-      "description": "Output variable of Password used by Service Connection (only for username/password auth)"
-    },
-    {
-      "name": "BuildTools.IdTokenRequestUrl",
-      "description": "Output variable of the OIDC token request URL (only for WorkloadIdentityFederation auth)"
-    },
-    {
-      "name": "BuildTools.AdoIdTokenRequestUrl",
-      "description": "Output variable for PAC_ADO_ID_TOKEN_REQUEST_URL environment variable (only for WorkloadIdentityFederation auth)"
-    },
-    {
-      "name": "BuildTools.AdoIdTokenRequestToken",
-      "description": "Output variable for PAC_ADO_ID_TOKEN_REQUEST_TOKEN (Azure DevOps OAuth token, only for WorkloadIdentityFederation auth)"
-    },
-    {
-      "name": "BuildTools.AuthenticationType",
-      "description": "Output variable indicating the authentication type used (WorkloadIdentityFederation, ClientSecret, or UsernamePassword)"
+      "name": "AuthenticationType",
+      "description": "Output variable indicating the authentication type used (WorkloadIdentityFederation, ManagedServiceIdentity, or ClientSecret)"
     }
   ],
   "inputs": [
@@ -74,17 +46,8 @@
       "required": true,
       "helpMarkDown": "Choose the authentication method for connecting to Power Platform.",
       "options": {
-        "PowerPlatformEnvironment": "Username/password (no MFA support)",
-        "PowerPlatformSPN": "Service Principal (supports MFA and WorkloadIdentityFederation)"
+        "PowerPlatformSPN": "Service Principal (supports WorkloadIdentityFederation and ManagedServiceIdentity)"
       }
-    },
-    {
-      "name": "PowerPlatformEnvironment",
-      "type": "connectedService:Generic",
-      "label": "Service connection",
-      "required": true,
-      "visibleRule": "authenticationType = PowerPlatformEnvironment",
-      "helpMarkDown": "Authenticate with your Power Platform environment with username/password. Does not support MFA."
     },
     {
       "name": "PowerPlatformSPN",
@@ -92,39 +55,7 @@
       "label": "Service connection",
       "required": true,
       "visibleRule": "authenticationType = PowerPlatformSPN",
-      "helpMarkDown": "Authenticate with your Power Platform environment with an Azure AppID, tenantID and client secret or WorkloadIdentityFederation."
-    },
-    {
-      "name": "Environment",
-      "label": "Environment Url",
-      "type": "string",
-      "defaultValue": "$(BuildTools.EnvironmentUrl)",
-      "required": false,
-      "helpMarkDown": "Environment url this task targets; default is the pipeline variable that e.g. the CreateEnvironment task has set before."
-    },
-    {
-      "name": "ApplicationId",
-      "type": "string",
-      "label": "Application Id",
-      "required": true,
-      "visibleRule": "authenticationType = PowerPlatformEnvironment",
-      "helpMarkDown": "Application Id to use to login."
-    },
-    {
-      "name": "RedirectUri",
-      "type": "string",
-      "label": "Redirect Uri",
-      "required": true,
-      "visibleRule": "authenticationType = PowerPlatformEnvironment",
-      "helpMarkDown": "Redirect URI of the specified App. Needed when specifying an App Id."
-    },
-    {
-      "name": "setAzureEnvironmentVariables",
-      "type": "boolean",
-      "label": "Set Azure environment variables",
-      "defaultValue": "false",
-      "required": false,
-      "helpMarkDown": "Set AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET environment variables and Azure Pipelines-specific variables (AZURESUBSCRIPTION_*) for automatic authentication with Azure SDK's DefaultAzureCredential and AzurePipelinesCredential. When enabled, tools using Azure CLI, PowerShell Az modules, and .NET applications will automatically authenticate without code changes."
+      "helpMarkDown": "Authenticate with your Power Platform environment with an Azure AppID, tenantID and client secret, WorkloadIdentityFederation, or ManagedServiceIdentity."
     }
   ],
   "execution": {
