@@ -28,6 +28,7 @@ Sets `BuildTools.*` pipeline variables from Power Platform service connections, 
     authenticationType: 'PowerPlatformSPN'
     PowerPlatformSPN: 'MyPowerPlatformConnection'
     Environment: 'https://myorg.crm.dynamics.com'
+    setAzureEnvironmentVariables: true
 
 # Use output variables in subsequent steps
 - task: PowerShell@2
@@ -40,7 +41,25 @@ Sets `BuildTools.*` pipeline variables from Power Platform service connections, 
 
 ## Azure SDK Integration
 
-Works seamlessly with Azure SDK's `DefaultAzureCredential` by mapping output variables to Azure environment variables:
+**Automatic Integration (New!)** - Enable seamless Azure SDK authentication:
+
+```yaml
+- task: ALM4DataverseSetConnectionVariables@1
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'MyPowerPlatformConnection'
+    Environment: 'https://myorg.crm.dynamics.com'
+    setAzureEnvironmentVariables: true  # 🔥 New parameter!
+
+# Azure CLI, PowerShell Az, and .NET apps now auto-authenticate
+- task: AzureCLI@2
+  inputs:
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az account show'  # No manual auth needed!
+```
+
+**Manual Integration** - For advanced scenarios, map output variables manually:
 
 ```yaml
 - task: PowerShell@2
@@ -55,7 +74,7 @@ Works seamlessly with Azure SDK's `DefaultAzureCredential` by mapping output var
       }
 ```
 
-This enables automatic authentication for Azure CLI, PowerShell Az modules, and .NET applications without code changes.
+This enables automatic authentication for Azure CLI, PowerShell Az modules, and .NET applications without code changes. For Azure Pipelines Workload Identity Federation, fetches and stores OIDC tokens in temporary files and sets additional environment variables (`AZURESUBSCRIPTION_*`, `AZURE_FEDERATED_TOKEN_FILE`) for optimal compatibility with both `DefaultAzureCredential` and `WorkloadIdentityCredential`.
 
 ## Why WorkloadIdentityFederation?
 

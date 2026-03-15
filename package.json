@@ -1,7 +1,7 @@
 {
   "name": "@alm4dataverse/azdo-extensions",
-  "version": "1.0.0",
-  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support",
+  "version": "1.1.4",
+  "description": "Azure DevOps tasks for ALM4Dataverse with WorkloadIdentityFederation support, enhanced Azure DevOps compatibility, and automatic Azure SDK integration",
   "main": "index.js",
   "scripts": {
     "clean": "node -e \"const fs=require('fs');const rm=(p)=>{if(fs.existsSync(p)){if(fs.statSync(p).isDirectory()){fs.readdirSync(p).forEach(f=>rm(p+'/'+f));fs.rmdirSync(p)}else{fs.unlinkSync(p)}}};rm('dist')\"",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "@types/node-fetch": "^2.6.13",
     "copyfiles": "^2.4.1",
     "ts-loader": "^9.5.4",
     "typescript": "^5.3.3",
@@ -24,7 +25,9 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "azure-devops-node-api": "^14.0.2",
     "azure-pipelines-task-lib": "^4.13.0",
+    "node-fetch": "^2.7.0",
     "tfx-cli": "^0.23.1"
   }
 }

@@ -72,7 +72,18 @@ The task sets the following pipeline variables:
     authenticationType: 'PowerPlatformSPN'
     PowerPlatformSPN: 'MyPowerPlatformConnection'
     Environment: 'https://myorg.crm.dynamics.com'
+    setAzureEnvironmentVariables: true  # Enable automatic Azure SDK integration
 ```
+
+#### Parameters
+
+- **authenticationType** (required): Choose between `PowerPlatformSPN` (Service Principal) or `PowerPlatformEnvironment` (Username/Password)
+- **PowerPlatformSPN**: Service connection name for Service Principal authentication
+- **PowerPlatformEnvironment**: Service connection name for Username/Password authentication
+- **Environment**: Power Platform environment URL (optional, defaults to `$(BuildTools.EnvironmentUrl)`)
+- **ApplicationId**: Required for Username/Password authentication
+- **RedirectUri**: Required for Username/Password authentication
+- **setAzureEnvironmentVariables** (optional): When `true`, automatically sets `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` environment variables for seamless integration with Azure SDK's `DefaultAzureCredential`. For WorkloadIdentityFederation, also fetches and stores the OIDC token in a temporary file (`AZURE_FEDERATED_TOKEN_FILE`) for optimal compatibility with both `DefaultAzureCredential` and `WorkloadIdentityCredential`.
 
 ### Using Output Variables
 
@@ -90,7 +101,9 @@ After running the task, use the output variables in subsequent steps:
 
 ### Using with DefaultAzureCredential
 
-The output variables can be mapped to Azure SDK environment variables to enable automatic authentication with `DefaultAzureCredential` regardless of the authentication type:
+**Option 1: Automatic Integration (Recommended)**
+
+Set `setAzureEnvironmentVariables: true` to automatically configure Azure environment variables:
 
 ```yaml
 - task: ALM4DataverseSetConnectionVariables@1
@@ -98,6 +111,37 @@ The output variables can be mapped to Azure SDK environment variables to enable 
     authenticationType: 'PowerPlatformSPN'
     PowerPlatformSPN: 'MyPowerPlatformConnection'
     Environment: 'https://myorg.crm.dynamics.com'
+    setAzureEnvironmentVariables: true
+
+# Now any tool using DefaultAzureCredential will automatically authenticate
+- task: AzureCLI@2
+  displayName: 'Use Azure CLI with Auto Authentication'
+  inputs:
+    azureSubscription: 'MyAzureSubscription'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Azure CLI will use the environment variables set by the task
+      az account show
+
+- script: |
+    echo "AZURE_TENANT_ID: $AZURE_TENANT_ID"
+    echo "AZURE_CLIENT_ID: $AZURE_CLIENT_ID"
+    # Your applications using Azure SDK will automatically authenticate
+  displayName: 'Verify Auto-Configuration'
+```
+
+**Option 2: Manual Mapping**
+
+Alternatively, manually map the output variables to Azure SDK environment variables:
+
+```yaml
+- task: ALM4DataverseSetConnectionVariables@1
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'MyPowerPlatformConnection'
+    Environment: 'https://myorg.crm.dynamics.com'
+    # setAzureEnvironmentVariables: false (using manual mapping instead)
 
 # Map BuildTools variables to Azure environment variables for DefaultAzureCredential
 - task: PowerShell@2
@@ -120,9 +164,12 @@ The output variables can be mapped to Azure SDK environment variables to enable 
       }
       elseif ($authType -eq "WorkloadIdentityFederation") {
         # For Workload Identity Federation, Azure SDK will use OIDC token from Azure DevOps
-        # The AZURE_FEDERATED_TOKEN environment variable will be set by the Azure SDK
-        # when it detects the Azure DevOps environment
-        Write-Host "Configured for WorkloadIdentityFederation - DefaultAzureCredential will use OIDC"
+        # When using setAzureEnvironmentVariables: true, the task automatically:
+        # - Fetches OIDC token from Azure DevOps API
+        # - Writes it to a temporary file
+        # - Sets AZURE_FEDERATED_TOKEN_FILE to point to that file
+        # - Sets AZURESUBSCRIPTION_* variables and AZURE_AUTHORITY_HOST
+        Write-Host "Configured for WorkloadIdentityFederation - DefaultAzureCredential will use OIDC token file"
       }
 
 # Now any tool using DefaultAzureCredential will automatically authenticate

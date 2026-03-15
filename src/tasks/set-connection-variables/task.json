@@ -1,10 +1,10 @@
 {
-  "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+  "id": "16f7fb6b-3b1e-46cd-a4cb-a2f018310f31",
   "name": "ALM4DataverseSetConnectionVariables",
   "friendlyName": "ALM4Dataverse Set Connection Variables",
-  "description": "Sets BuildTools.* variables to provide custom script tasks access to use the Service Connection as a single source of truth. Supports WorkloadIdentityFederation.",
+  "description": "Sets BuildTools.* variables and optionally AZURE_* environment variables to provide custom script tasks access to use the Service Connection as a single source of truth. Supports WorkloadIdentityFederation with enhanced Azure DevOps compatibility and automatic Azure SDK integration.",
   "author": "ALM4Dataverse",
-  "helpMarkDown": "Sets pipeline variables from Power Platform service connection. Supports WorkloadIdentityFederation, Service Principal with client secret, and username/password authentication.",
+  "helpMarkDown": "Sets pipeline variables from Power Platform service connection. Supports WorkloadIdentityFederation, Service Principal with client secret, and username/password authentication. Can automatically configure Azure SDK environment variables for seamless DefaultAzureCredential integration with enhanced Azure DevOps compatibility.",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -13,8 +13,8 @@
   "demands": [],
   "version": {
     "Major": "1",
-    "Minor": "0",
-    "Patch": "1"
+    "Minor": "1",
+    "Patch": "4"
   },
   "preview": false,
   "minimumAgentVersion": "2.144.0",
@@ -117,6 +117,14 @@
       "required": true,
       "visibleRule": "authenticationType = PowerPlatformEnvironment",
       "helpMarkDown": "Redirect URI of the specified App. Needed when specifying an App Id."
+    },
+    {
+      "name": "setAzureEnvironmentVariables",
+      "type": "boolean",
+      "label": "Set Azure environment variables",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Set AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET environment variables and Azure Pipelines-specific variables (AZURESUBSCRIPTION_*) for automatic authentication with Azure SDK's DefaultAzureCredential and AzurePipelinesCredential. When enabled, tools using Azure CLI, PowerShell Az modules, and .NET applications will automatically authenticate without code changes."
     }
   ],
   "execution": {

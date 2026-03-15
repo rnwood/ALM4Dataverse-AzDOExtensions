@@ -2,9 +2,9 @@
   "manifestVersion": 1,
   "id": "alm4dataverse-azdo-extensions",
   "name": "ALM4Dataverse Azure DevOps Extensions",
-  "version": "1.0.7",
+  "version": "1.1.4",
   "publisher": "alm4dataverse",
-  "description": "Azure DevOps tasks for ALM4Dataverse with enhanced support for WorkloadIdentityFederation authentication",
+  "description": "Azure DevOps tasks for ALM4Dataverse with enhanced support for WorkloadIdentityFederation authentication, Azure DevOps compatibility, and automatic Azure SDK integration",
   "tags": [
     "Power Platform",
     "ALM",
@@ -13,6 +13,8 @@
     "Azure Pipelines",
     "WorkloadIdentityFederation",
     "Authentication",
+    "Azure SDK",
+    "DefaultAzureCredential",
     "Build",
     "Release"
   ],
